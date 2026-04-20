@@ -18,6 +18,9 @@ env/
 .env
 .vscode/
 
+# Claude Code plans
+.claude/
+
 # Project specific
 *.new
 

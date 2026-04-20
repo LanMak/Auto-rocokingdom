@@ -44,7 +44,6 @@ class AppConfig:
     pollute_capture_template_name: str = "pollute_capture.png"
 
     # Runtime controls.
-    stop_hotkey: str = "f8"
 
 
 CONFIG = AppConfig()
