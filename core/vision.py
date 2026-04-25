@@ -50,7 +50,7 @@ def load_templates() -> List[Template]:
         if raw is None:
             logging.warning("跳过无法读取的模板: %s", path)
             continue
-        if "yes" in path.lower():
+        if "yes" in path.lower() or "qiudaidai" in path.lower():
             processed = cv2.cvtColor(raw, cv2.COLOR_BGR2GRAY)
         else:
             processed = preprocess(raw)

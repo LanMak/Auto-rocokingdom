@@ -2,6 +2,7 @@ import logging
 import time
 from typing import Dict, List, Optional, Tuple
 
+import cv2
 import mss
 
 from config import CONFIG
@@ -233,14 +234,14 @@ class Engine:
                 else:
                     logging.info("行动检测: %s=%.3f", action_template, action_score)
 
-                    # ── Teammate reconnect detection (silent) ──
+                    # ── Teammate reconnect detection ──
                     center_roi = CONFIG.reconnect_center_roi
                     center_bgr = _extract_roi(full_window_bgr, width, height, *center_roi)
-                    center_processed = preprocess(center_bgr)
-                    reconnect_score = match_single(center_processed, templates, reconnect_template_key, scale=scale)
+                    center_gray = cv2.cvtColor(center_bgr, cv2.COLOR_BGR2GRAY)
+                    reconnect_score = match_single(center_gray, templates, reconnect_template_key, scale=scale)
 
                     if reconnect_score >= CONFIG.match_threshold:
-                        logging.debug("检测到同行请求，按 F 确认（qiudaidai=%.3f）", reconnect_score)
+                        logging.info("检测到同行请求，按 F 确认（qiudaidai=%.3f）", reconnect_score)
                         press_once(hwnd, CONFIG.reconnect_accept_key)
 
                 event = BattleEvent(
