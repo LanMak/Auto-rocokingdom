@@ -1,4 +1,3 @@
-import logging
 import time
 
 try:
@@ -12,7 +11,6 @@ import win32con
 
 def press_once(hwnd: int, key: str) -> None:
     if win32gui is None:
-        logging.info("非 Windows 环境，模拟按键: %s", key)
         return
 
     if key.lower() == "esc":
@@ -20,7 +18,6 @@ def press_once(hwnd: int, key: str) -> None:
     elif len(key) == 1:
         vk_code = win32api.VkKeyScan(key) & 0xFF
     else:
-        logging.warning("不支持的按键字符串: %s", key)
         return
 
     scan_code = win32api.MapVirtualKey(vk_code, 0)
@@ -35,7 +32,6 @@ def press_once(hwnd: int, key: str) -> None:
 
 def click_at(hwnd: int, x: int, y: int) -> bool:
     if win32gui is None:
-        logging.info("非 Windows 环境，模拟点击 (%d, %d)", x, y)
         return True
 
     try:
@@ -45,8 +41,6 @@ def click_at(hwnd: int, x: int, y: int) -> bool:
         win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
         time.sleep(0.1)
         win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
-        logging.info("已执行物理点击，屏幕坐标: %s", screen_pos)
         return True
-    except Exception as e:
-        logging.warning("执行物理点击失败: %s", e)
+    except Exception:
         return False

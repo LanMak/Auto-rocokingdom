@@ -1,8 +1,7 @@
 import glob
-import logging
 import os
 from dataclasses import dataclass
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 import cv2
 import numpy as np
@@ -22,10 +21,8 @@ def normalize_template_name(name: str) -> str:
 
 def normalize_poll_interval(interval: float) -> float:
     if interval <= 0:
-        logging.warning("轮询间隔 poll_interval_sec <= 0，已回退到 5.0")
         return 5.0
     if interval > 5.0:
-        logging.warning("轮询间隔 poll_interval_sec > 5.0，已钳制到 5.0")
         return 5.0
     return interval
 
@@ -48,12 +45,16 @@ def load_templates() -> List[Template]:
     for path in paths:
         raw = cv2.imread(path)
         if raw is None:
-            logging.warning("跳过无法读取的模板: %s", path)
             continue
-        if "yes" in path.lower() or "qiudaidai" in path.lower():
+        if "yes" in path.lower():
             processed = cv2.cvtColor(raw, cv2.COLOR_BGR2GRAY)
         else:
             processed = preprocess(raw)
+
+        tpl_mask = None
+        if "qiudaidai" in path.lower():
+            processed = cv2.cvtColor(raw, cv2.COLOR_BGR2GRAY)
+
         templates.append(Template(name=os.path.basename(path), image=processed))
 
     if not templates:
@@ -61,7 +62,6 @@ def load_templates() -> List[Template]:
             "No template images found. Put PNG files into templates/ first."
         )
 
-    logging.info("已加载模板数量: %d", len(templates))
     return templates
 
 
@@ -105,7 +105,6 @@ def match_single(
     target_name: str,
     scale: float = 1.0,
 ) -> float:
-    """Match a single template by normalized name, return its best score."""
     target_key = normalize_template_name(target_name)
     fh, fw = frame_processed.shape[:2]
 

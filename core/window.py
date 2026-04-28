@@ -1,5 +1,4 @@
 import ctypes
-import logging
 from typing import Optional, Tuple
 
 from config import CONFIG

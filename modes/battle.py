@@ -1,9 +1,11 @@
-import logging
+from datetime import datetime
 from typing import Optional
 
 from config import CONFIG
 from core.input import press_once
 from modes.base import BaseMode, BattleEvent
+
+_Ts = lambda: datetime.now().strftime("%H:%M:%S")
 
 
 class BattleMode(BaseMode):
@@ -19,5 +21,5 @@ class BattleMode(BaseMode):
         if not is_hit:
             return None
         press_once(event.hwnd, CONFIG.press_key)
-        logging.info("已触发按键: %s（连续模式）", CONFIG.press_key)
+        print(f"[{_Ts()}] 已触发按键: {CONFIG.press_key}（连续模式）")
         return None

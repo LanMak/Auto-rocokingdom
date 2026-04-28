@@ -1,8 +1,5 @@
-import logging
-
 from config import CONFIG
 from core.engine import Engine
-from core.logger import setup_logging
 from modes import MODE_REGISTRY
 from modes.smart import ACTION_OPTIONS, SmartMode
 
@@ -26,8 +23,6 @@ def _prompt_action(battle_type: str, default: str) -> str:
 
 
 def main() -> None:
-    setup_logging()
-
     print("\n请选择运行模式:")
     for key, cls in sorted(MODE_REGISTRY.items()):
         mode = cls()
@@ -60,10 +55,6 @@ def main() -> None:
     else:
         mode_cls = MODE_REGISTRY.get(choice, MODE_REGISTRY["1"])
         mode = mode_cls()
-
-    logging.info("已选择模式: %s", mode.label)
-    from core.logger import log_audit
-    log_audit("模式已选择", 模式=mode.name)
 
     Engine(mode).run()
 

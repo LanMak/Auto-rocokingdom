@@ -1,13 +1,14 @@
-import logging
 import time
+from datetime import datetime
 from typing import Optional
 
 from config import CONFIG
 from core.capture import capture_window_bgr
 from core.input import click_at, press_once
-from core.logger import log_audit
 from core.vision import best_yes_score_and_loc
 from modes.base import BaseMode, BattleEvent
+
+_Ts = lambda: datetime.now().strftime("%H:%M:%S")
 
 
 class EscapeMode(BaseMode):
@@ -23,7 +24,7 @@ class EscapeMode(BaseMode):
         if not is_hit:
             return None
         press_once(event.hwnd, "esc")
-        logging.info("已触发 ESC")
+        print(f"[{_Ts()}] 已触发 ESC")
 
         button_clicked = False
         yes_best_score = -1.0
@@ -52,26 +53,14 @@ class EscapeMode(BaseMode):
                     click_y = int(round(best_loc_this_round[1] * event.window_height / cap_h))
                     click_x = max(0, min(event.window_width - 1, click_x))
                     click_y = max(0, min(event.window_height - 1, click_y))
-                    logging.debug(
-                        "点击坐标归一化: 截图=%sx%s 客户区=%sx%s 原始=(%s,%s) 映射=(%s,%s)",
-                        cap_w, cap_h, event.window_width, event.window_height,
-                        best_loc_this_round[0], best_loc_this_round[1],
-                        click_x, click_y,
-                    )
 
                 click_ok = click_at(event.hwnd, click_x, click_y)
                 button_clicked = click_ok
                 if click_ok:
-                    log_audit("逃跑确认点击成功", 模式=self.name)
+                    print(f"[{_Ts()}] 逃跑确认点击成功")
                     break
 
         if not button_clicked:
-            logging.warning("触发 ESC 后未找到确认按钮 yes.png")
-            log_audit(
-                "逃跑确认点击失败",
-                模式=self.name,
-                最佳是按钮分数=round(yes_best_score, 4),
-            )
+            print(f"[{_Ts()}] [警告] 触发 ESC 后未找到确认按钮 yes.png（最佳分数={yes_best_score:.3f}）")
 
-        # Extra cooldown to prevent ESC spam while dialog is closing
         return 2.0

@@ -25,3 +25,4 @@ env/
 *.new
 
 run.bat
+template_debug/

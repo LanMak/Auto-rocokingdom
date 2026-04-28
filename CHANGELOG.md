@@ -1,5 +1,16 @@
 # 更新日志
 
+### 2026-04-28
+
+1. 新增污染精灵 CSV 日志：每场污染战斗自动记录序号、时间、精灵名称到 `logs/pollute_log.csv`（Excel 可直接打开）。
+2. 新增可选 OCR 精灵识别：基于 EasyOCR（CPU 版 PyTorch）自动识别污染精灵名称，未安装时统一标记为"未知"。
+3. 移除 `logging` / `runtime.log` / `audit.log` 文件日志，终端输出改用 `print` 并附带 `[HH:MM:SS]` 时间戳。
+4. 模板分类规则重构：明确划分行动检测、战斗类型、战斗结束、逃跑确认、同行检测五类模板及其匹配模式。
+5. `capture.png` 和 `pollute_capture.png` 排除出行动检测评分，战斗开始时输出两者分数方便排查。
+6. 同行检测 ROI 收窄至中心 50%，qiudaidai 改用灰度匹配 + 独立阈值 0.6。
+7. 移除 `heaths.png`、`skill2.png`、`skill3.png` 模板。
+8. 新增 `debug_templates.py` 工具脚本，输出预处理后的模板图和掩码用于调试。
+
 ### 2026-04-24
 
 1. 新增同行自动确认：非战斗状态下检测到 `qiudaidai.png`（画面中心区域）时静默按 `F` 确认重新建立同行。

@@ -36,6 +36,22 @@ Before every git commit:
 2. Review `.gitignore` and add any new files or directories that should not be tracked (e.g., newly generated files, IDE configs, sensitive data).
 3. Changelog entries: put functional changes (new features, bug fixes) first; structural/refactor changes are secondary.
 
+## Template Roles
+
+Templates in `templates/` are strictly partitioned by purpose. Each template belongs to exactly one category:
+
+| Category | Templates | Matching mode | Purpose |
+|---|---|---|---|
+| Action detection | `skill1.png`, `exchange.png`, etc. | Canny edge | Detect action buttons during battle; trigger key presses |
+| Battle type | `capture.png`, `pollute_capture.png` | Canny edge | Compare scores at battle start to classify normal vs pollution |
+| Battle end | `elf_P.png`, `missions.png`, `map.png` | Canny edge | Detect battle-over screen in their respective ROIs |
+| Escape confirm | `yes.png` | Grayscale | Locate the "confirm" button position after ESC in escape mode |
+| Teammate reconnect | `qiudaidai.png` | Grayscale (threshold 0.6) | Detect teammate rejoin request in non-battle state |
+
+Matching mode is determined in `core/vision.py:load_templates()` — templates with `yes` or `qiudaidai` in the filename use grayscale (`cv2.cvtColor(BGR2GRAY)`), all others use Canny edge detection.
+
+Only **action detection** templates contribute to the action score that triggers battle state transitions. All other templates are excluded from action scoring.
+
 ## Key Conventions
 
 - All user-facing strings and log messages are in Chinese

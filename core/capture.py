@@ -1,5 +1,4 @@
 import ctypes
-import logging
 
 import cv2
 import numpy as np
@@ -47,7 +46,6 @@ def capture_window_bgr(hwnd: int) -> np.ndarray:
 
     expected_size = client_h * client_w * 4
     if len(img) != expected_size:
-        logging.warning(f"截图数据长度不匹配: 期望 {expected_size}, 实际 {len(img)}")
         img = np.zeros(expected_size, dtype='uint8')
 
     img.shape = (client_h, client_w, 4)

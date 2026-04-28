@@ -13,7 +13,7 @@ class AppConfig:
     require_exact_resolution: bool = False
 
     # Polling interval must be <= 5.0 seconds per user requirement.
-    poll_interval_sec: float = 3.0
+    poll_interval_sec: float = 2.0
 
     # Trigger exactly one key press on state transition.
     press_key: str = "x"
@@ -46,7 +46,21 @@ class AppConfig:
     # Teammate reconnect detection (non-battle state).
     reconnect_template_name: str = "qiudaidai.png"
     reconnect_accept_key: str = "f"
-    reconnect_center_roi: tuple = (0.15, 0.15, 0.7, 0.7)  # (left, top, width, height)
+    reconnect_center_roi: tuple = (0.25, 0.25, 0.5, 0.5)  # (left, top, width, height)
+    reconnect_threshold: float = 0.6
+
+    # OCR spirit name detection ROI: top-right corner of the game window.
+    ocr_roi_left_ratio: float = 0.85
+    ocr_roi_top_ratio: float = 0.0
+    ocr_roi_width_ratio: float = 0.15
+    ocr_roi_height_ratio: float = 0.15
+
+    # OCR preprocessing parameters.
+    ocr_upscale_factor: float = 2.0
+    ocr_fallback_text: str = "未知"
+
+    # Pollution battle CSV log.
+    pollute_log_path: str = "logs/pollute_log.csv"
 
     # Runtime controls.
 
