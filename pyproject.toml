@@ -1,0 +1,27 @@
+[project]
+name = "auto-roco"
+version = "2.0.0"
+description = "洛克王国：世界 游戏自动化助手"
+requires-python = ">=3.10"
+dependencies = [
+    "opencv-python>=4.9.0.80",
+    "numpy>=1.26.4",
+    "mss>=9.0.1",
+    "pywin32>=306",
+]
+
+[project.optional-dependencies]
+easyocr = [
+    "torch>=2.0.0",
+    "torchvision>=0.15.0",
+    "easyocr",
+]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+torchvision = { index = "pytorch-cpu" }

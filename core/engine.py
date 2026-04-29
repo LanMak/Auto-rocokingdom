@@ -9,7 +9,7 @@ from config import CONFIG
 from core.capture import capture_window_bgr
 from core.input import press_once
 from core.ocr import recognize_spirit_name
-from core.pollute_logger import log_pollute_battle
+from core.pollute_logger import log_mode_start, log_pollute_battle
 from core.vision import (
     Template,
     best_match_score,
@@ -58,6 +58,7 @@ class Engine:
 
     def run(self) -> None:
         print(f"[{_ts()}] 检测器已启动（模式: {self._mode.label}），按 Ctrl+C 退出。")
+        log_mode_start(self._mode.label)
 
         templates = load_templates()
         interval = normalize_poll_interval(CONFIG.poll_interval_sec)

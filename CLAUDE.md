@@ -32,9 +32,9 @@ Requires Administrator privileges for input simulation. No build step, no tests,
 ## Commit Rules
 
 Before every git commit:
-1. Review README.md and update any sections affected by the changes (e.g., update logs, mode descriptions, usage instructions, feature lists).
-2. Review `.gitignore` and add any new files or directories that should not be tracked (e.g., newly generated files, IDE configs, sensitive data).
-3. Changelog entries: put functional changes (new features, bug fixes) first; structural/refactor changes are secondary.
+1. Review CHANGELOG.md and add entries for all functional changes (new features, bug fixes) first; structural/refactor changes are secondary.
+2. Review README.md and update any sections affected by the changes (e.g., update logs, mode descriptions, usage instructions, feature lists).
+3. Review `.gitignore` and add any new files or directories that should not be tracked (e.g., newly generated files, IDE configs, sensitive data).
 
 ## Template Roles
 

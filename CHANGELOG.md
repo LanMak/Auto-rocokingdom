@@ -1,5 +1,12 @@
 # 更新日志
 
+### 2026-04-29
+
+1. 新增 CSV session 标记行：每次启动脚本时写入 `#, 时间, mode=模式名`，区分不同运行区间。
+2. 切换至 uv 包管理器：新增 `pyproject.toml`，uv 自动管理 Python 版本和虚拟环境，无需手动安装 Python。
+3. EasyOCR 强制使用 CPU 版 torch：通过 `[tool.uv.sources]` 显式指定 PyTorch CPU 索引，避免误装 CUDA 版（体积 2GB+）。
+4. 底层 CSV 日志记录由 `log_pollute_battle` / `log_mode_start` 两个函数管理，异常静默吞掉。
+
 ### 2026-04-28
 
 1. 新增污染精灵 CSV 日志：每场污染战斗自动记录序号、时间、精灵名称到 `logs/pollute_log.csv`（Excel 可直接打开）。

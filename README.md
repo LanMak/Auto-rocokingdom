@@ -37,34 +37,58 @@
 
 ## 📖 使用步骤
 
-### 第一步：环境配置
-确认你的电脑已安装 **Python 3.10** 或更高版本。可以通过在终端输入 `python --version` 查看。
+### 第一步：安装 uv
 
-### 第二步：以管理员身份打开终端
-1.  右键点击 Windows 开始菜单或搜索框。
-2.  选择 **Windows PowerShell (管理员)** 或 **终端 (管理员)**。
-3.  **注意**：为了确保脚本能向游戏发送点击指令，必须使用管理员模式。
+uv 是本项目的包管理器，它会自动下载和管理 Python，**无需事先安装 Python**。
 
-### 第三步：安装依赖库
-定位到本项目文件夹，运行以下命令安装必要的运行库：
-```bash
-pip install -r requirements.txt
+打开任意终端（按 `Win+R`，输入 `powershell`，回车），运行：
+
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
-### 第四步（可选）：安装 EasyOCR 精灵识别
-如需自动识别污染精灵名称，额外安装：
+安装完成后，**关闭终端并重新打开**，输入 `uv --version`，出现版本号即表示安装成功。
+
+### 第二步：以管理员身份打开终端并进入项目目录
+
+脚本需要向游戏窗口发送键盘和鼠标指令，Windows 安全策略要求**必须以管理员身份运行**才能模拟输入。
+
+1.  按 `Win+X`，选择 **Windows PowerShell (管理员)** 或 **终端 (管理员)**。
+2.  在终端中 `cd` 到项目目录，例如：
+    ```powershell
+    cd C:\Users\你的用户名\Desktop\Auto-rocokindom
+    ```
+    > 小技巧：在文件资源管理器中打开项目文件夹，点击地址栏复制路径，直接粘贴到终端即可。
+
+### 第三步：安装依赖
+
 ```bash
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
-pip install easyocr
+uv sync
 ```
-不安装不影响其他功能，污染日志中精灵名称将记录为"未知"。
+
+### 第四步（可选）：安装精灵名称识别
+
+如需自动识别污染精灵名称并记录到 CSV 日志，额外安装 EasyOCR：
+
+```bash
+uv sync --extra easyocr
+```
+
+> 为什么用 CPU 版 torch？精灵名称识别是轻量 OCR 任务，CPU 运算完全够用。CUDA 版 PyTorch 体积超过 2GB，且需要 NVIDIA 显卡。
+
+跳过此步骤不影响其他功能，日志中的精灵名称将统一记录为"未知"。
+
+> 首次运行时 EasyOCR 会自动从外网下载识别模型（约 100MB），请耐心等待。若下载缓慢，建议开启代理。
 
 ### 第五步：启动脚本
+
 在管理员终端中运行：
+
 ```bash
-python main.py
+uv run main.py
 ```
-随后根据屏幕提示输入 `1`、`2`、`3` 或 `4` 选择功能模式。选择智能模式（4）时，可按提示自定义配置。
+
+随后根据屏幕提示输入 `1`-`4` 选择模式。选择智能模式（4）时可按提示自定义污染战斗和普通战斗的行为。
 
 ---
 
